@@ -596,10 +596,22 @@ export default {
       }
       emailjs.send('service_ac8z5co', 'template_mncet7w', data, 'user_rvdrnYx1xlC2PLDxWcyaL')
       .then(response => {
-        console.log('success', response.text)
+        this.$swal({
+        title: "Enviado",
+        text: "<p>Su recibo será envíado al correo indicado</p>",
+        icon: 'success',
+        confirmButtonClass: "button-alerta",
+        confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
+        });
       },
       error => {
-        console.log('failed', error.text)
+        this.$swal({
+        title: "Error",
+        text: "<p>Su compra no pudo ser realizada</p>",
+        icon: 'error',
+        confirmButtonClass: "button-alerta",
+        confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
+        });
       })
     },
     payout() {
