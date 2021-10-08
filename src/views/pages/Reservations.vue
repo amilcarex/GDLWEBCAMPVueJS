@@ -625,7 +625,27 @@ export default {
         });
         return;
       }
-      this.sendMail();
+      if(this.camisas > 0 && this.subtotals.camisas == 0  || this.etiquetas > 0 &&  this.subtotals.etiquetas == 0){
+        this.$swal({
+        title: "Atención",
+        html: "<p>Estás realizando un pago sin calcular los costos de camisas o etiquetas</p><br><p>¿Deseas pagar de igual forma?</p>",
+        icon: 'error',
+        showCancelButton:true,
+        cancelButtonText: "<span class='alerta cancel'>No <i class='fas fa-backspace'></i> </span>",
+        cancelButtonClass:"button-alerta-cancel",
+        confirmButtonClass: "button-alerta",
+        confirmButtonText: "<span class='alerta'>Si <i class='fas fa-thumbs-up'></i> </span>",
+        }).then(result =>{
+          if(result.isConfirmed){ 
+            this.subtotals.camisas = ((this.camisas * 10 ) * 0.93);
+            this.subtotals.etiquetas =(this.etiquetas * 2);
+            this.sendMail();
+          }
+        });
+        return;
+      }else{
+        this.sendMail();
+      }
 
 
     },
