@@ -639,6 +639,8 @@ export default {
           if(result.isConfirmed){ 
             this.subtotals.camisas = ((this.camisas * 10 ) * 0.93);
             this.subtotals.etiquetas =(this.etiquetas * 2);
+            const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+            this.total = sumValues(this.subtotals);
             this.sendMail();
           }
         });
