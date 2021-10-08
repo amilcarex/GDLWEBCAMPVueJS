@@ -92,6 +92,7 @@ export default {
       camisas: 0,
       etiquetas: 0,
       regalo: null,
+      subtotal: 0,
       total: 0,
       totalEvents: [
         {
@@ -409,6 +410,13 @@ export default {
           ],
         },
       ],
+      subtotals:{
+        camisas: 0,
+        etiquetas: 0,
+        boletos_1dia: 0,
+        boletos_2dias: 0,
+        boletos_3dias: 0,
+      }
     };
   },
   created(){
@@ -495,7 +503,15 @@ export default {
       this.etiquetas = data;
     },
     selectRegalo(data) {
-      this.regalo = data;
+      if(data == 1){
+        this.regalo = 'Pulsera'
+      }
+      if(data == 2){
+        this.regalo = 'Etiquetas'
+      }
+      if(data == 3){
+        this.regalo = 'Plumas'
+      }
     },
     calculate() {
       if (
@@ -517,7 +533,7 @@ export default {
           
         this.$swal({
           title: "Error",
-          text: "<p>Debe ser un Correo Válido</p>",
+          html: "<p>Debe ser un Correo Válido</p>",
           icon: 'error',
         confirmButtonClass: "button-alerta",
           confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
@@ -532,7 +548,7 @@ export default {
         
       this.$swal({
         title: "Error",
-        text: "<p>Debes comprar al menos un Boleto</p>",
+        html: "<p>Debes comprar al menos un Boleto</p>",
         icon: 'error',
         confirmButtonClass: "button-alerta",
         confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
@@ -542,31 +558,41 @@ export default {
       if (this.regalo == null || this.regalo == "") {
       this.$swal({
         title: "Error",
-        text: "<p>Debes Elegir un Regalo</p>",
+        html: "<p>Debes Elegir un Regalo</p>",
         icon: 'error',
         confirmButtonClass: "button-alerta",
         confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
         });
         return;
       }
-
-      this.total =
-        this.boletos_1dia * 30 +
-        this.boletos_2dias * 40 +
-        this.boletos_3dias * 50 +
-        this.camisas * 10 * 0.93 +
-        this.etiquetas * 2;
-
+      this.subtotals.camisas = ((this.camisas * 10 ) * 0.93);
+      this.subtotals.etiquetas =(this.etiquetas * 2);
+      this.subtotals.boletos_1dia = (this.boletos_1dia * 30 );
+      this.subtotals.boletos_2dias = ( this.boletos_2dias * 40);
+      this.subtotals.boletos_3dias = (this.boletos_3dias * 50);
+      this.subtotal = (this.boletos_1dia * 30 )+( this.boletos_2dias * 40) +(this.boletos_3dias * 50);
+      const sumValues = obj => Object.values(obj).reduce((a, b) => a + b);
+      this.total = sumValues(this.subtotals);
       let total = $("#suma-total");
       total.html(this.total+'$');
     },
     sendMail(){
-      console.log('hola');
       let data = {
-        from_name : "yo",
-        to_name : "me",
-        message : "Para mi ps",
-        reply_to : "A otra persona"
+        to_name : this.user.nombre,
+        to_email: this.user.email,
+        tickets1: this.boletos_1dia,
+        price_tickets1 : this.subtotals.boletos_1dia,
+        tickets2: this.boletos_2dias,
+        price_tickets2 : this.subtotals.boletos_2dias,
+        tickets3: this.boletos_3dias,
+        price_tickets3 : this.subtotals.boletos_3dias,
+        camisas: this.camisas,
+        price_camisas: this.subtotals.camisas,
+        etiquetas: this.etiquetas,
+        price_etiquetas: this.subtotals.etiquetas,
+        subtotal: this.subtotal,
+        total: this.total,
+        regalo: this.regalo,
       }
       emailjs.send('service_ac8z5co', 'template_mncet7w', data, 'user_rvdrnYx1xlC2PLDxWcyaL')
       .then(response => {
