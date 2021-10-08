@@ -598,7 +598,7 @@ export default {
       .then(response => {
         this.$swal({
         title: "Enviado",
-        text: "<p>Su recibo será envíado al correo indicado</p>",
+        html: "<p>Su recibo será envíado al correo indicado</p>",
         icon: 'success',
         confirmButtonClass: "button-alerta",
         confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
@@ -607,7 +607,7 @@ export default {
       error => {
         this.$swal({
         title: "Error",
-        text: "<p>Su compra no pudo ser realizada</p>",
+        html: "<p>Su compra no pudo ser realizada</p>",
         icon: 'error',
         confirmButtonClass: "button-alerta",
         confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
@@ -618,7 +618,7 @@ export default {
       if (this.total == 0 || this.total == null) {
       this.$swal({
         title: "Error",
-        text: "<p>Primero debes calcular el monto a pagar</p>",
+        html: "<p>Primero debes calcular el monto a pagar</p>",
         icon: 'error',
         confirmButtonClass: "button-alerta",
         confirmButtonText: "<span class='alerta'>Entiendo <i class='fas fa-thumbs-up'></i> </span>",
